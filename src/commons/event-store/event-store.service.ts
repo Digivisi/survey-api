@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
 
 @Injectable()
-export class EventSourceService {
+export class EventStoreService {
   constructor(
     private eventBus: EventBus,
   ){
     this.eventBus.subscribe(event => {
-      console.log(event);
+      // can put some logic here
     });
   }
 }

@@ -1,9 +1,11 @@
-import { SurveyModel } from './survey.model';
-import { Injectable } from '@nestjs/common';
+import { Repository, EntityRepository } from 'typeorm';
+import { Survey } from './survey.entity';
 
-@Injectable()
-export class SurveyRepository {
-  findOneById(id: string): SurveyModel{
-    return new SurveyModel();
+@EntityRepository(Survey)
+export class SurveyRepository extends Repository<Survey>{
+  
+  findExistingTitle(pTitle: string) {
+    return this.findOne({where: {title: pTitle}});
   }
+  
 }

@@ -1,6 +1,10 @@
 # Use postgres/example user/password credentials
 version: '3.1'
 
+volumes:
+  database_data:
+    driver: local
+
 services:
 
   api:
@@ -17,11 +21,14 @@ services:
     depends_on:
       - postgres
     environment:
-      DATABASE_URL: postgres://postgres@postgres/survey
+      DATABASE_URL: postgres://@edi@edi@postgres/survey
 
   postgres:
     image: postgres:12.1-alpine
-
+    volumes:
+      - database_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432 
     restart: always
     environment:
       POSTGRES_USER: postgres

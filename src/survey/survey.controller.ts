@@ -1,19 +1,26 @@
-import { Controller, Post, Body } from '@nestjs/common';
-import { SurveyService } from './survey.service';
+import { Controller, Post, Body, HttpException, HttpStatus, HttpCode, Res } from '@nestjs/common';
+import { CommandBus } from '@nestjs/cqrs';
 import { CreateSurveyDto } from './data/create-survey.dto';
+import { CreateSurveyCommand } from './command/impl/create-survey.command';
 
 @Controller('survey')
 export class SurveyController {
   constructor(
-    private readonly surveyService: SurveyService
+    private readonly commandBus: CommandBus
   ){}
 
   @Post()
-  async createSurvey(@Body() createSurveyDto: CreateSurveyDto){
+  @HttpCode(201)
+  async createSurvey(@Body() createSurveyDto: CreateSurveyDto) {
     console.log(createSurveyDto);
     console.log("====");
     const {title} = createSurveyDto;
-    this.surveyService.createSurvey({title});
+    try {
+      return await this.commandBus.execute(new CreateSurveyCommand(title));
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.CONFLICT);
+    }
+    
   }
   
 }

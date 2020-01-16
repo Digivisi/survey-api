@@ -1,18 +1,21 @@
-import {CommandBus} from '@nestjs/cqrs';
-import { CreateSurveyCommand } from './command/impl/create-survey.command';
-import { CreateSurveyDto } from './data/create-survey.dto';
 import { Injectable } from '@nestjs/common';
+import { SurveyRepository } from './data/survey.repository';
 
 @Injectable()
 export class SurveyService {
   constructor(
-    private readonly commandBus: CommandBus
+    private readonly repository: SurveyRepository
   ){}
 
-  createSurvey(createSurveyDto: CreateSurveyDto){
-    const {title} = createSurveyDto;
-    return this.commandBus.execute(new CreateSurveyCommand(title));
+  async createNewSurvey({title}) {
+    const exist = await this.repository.findExistingTitle(title);
+    if (!exist) {
+      const survey = this.repository.create();
+      survey.setTitle(title);
+      this.repository.save(survey);
+    } else {
+      throw new Error('Survey with the same title already exist!');
+    }
   }
-  updateSurvey(){}
-  deleteSurvey(){}
+  
 }
