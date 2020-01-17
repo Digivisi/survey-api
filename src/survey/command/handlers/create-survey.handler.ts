@@ -15,7 +15,7 @@ export class CreateSurveyHandler implements ICommandHandler<CreateSurveyCommand>
     return await this.surveyService.createNewSurvey({title})
       .then(() => {
         this.eventBus.publish(new SurveyCreatedEvent(title));
-        return 'Command Success';
+        return `${command.constructor.name}:success`;
       });
   }
 

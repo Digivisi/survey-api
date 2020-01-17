@@ -1,5 +1,4 @@
 import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
-import { AggregateRoot } from '@nestjs/cqrs';
 
 @Entity()
 export class Survey {
