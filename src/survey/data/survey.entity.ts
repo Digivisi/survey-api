@@ -6,10 +6,10 @@ export class Survey {
   id: number;
 
   @Column()
-  title: string
+  title: string;
 
   @Column({type: 'text', nullable: true})
-  description: string
+  description: string;
 
 
   setTitle(value) {
