@@ -21,7 +21,7 @@ services:
     depends_on:
       - postgres
     environment:
-      DATABASE_URL: postgres://@edi@edi@postgres/survey
+      DATABASE_URL: postgres://postgres@postgres/survey
       GOOGLE_APPLICATION_CREDENTIALS: service-account.json
 
 
